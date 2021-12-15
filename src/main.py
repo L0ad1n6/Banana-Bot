@@ -4,11 +4,11 @@ from discord.ext import commands
 from dotenv import load_dotenv
 import os
 
-from moderation import Moderation
-from social_credit import SocialCredit
-from utility import Utility
-from help import Help
-load_dotenv()
+from commands.moderation import Moderation
+from commands.social_credit import SocialCredit
+from commands.utility import Utility
+from commands.help import Help
+from server import keep_alive
 
 def main():
     bot = commands.Bot(command_prefix="--")
@@ -22,4 +22,6 @@ def main():
     bot.run(os.getenv("token"))
 
 if __name__ == "__main__":
+    load_dotenv()
+    keep_alive()
     main()
