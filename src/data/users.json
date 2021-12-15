@@ -1,0 +1,35 @@
+{
+  "586902188899696653": {
+    "social_credit": 0,
+    "warns": []
+  },
+  "495606508264882196": {
+    "social_credit": 0,
+    "warns": []
+  },
+  "530938174969479190": {
+    "social_credit": 0,
+    "warns": [
+      "impropper use of bot",
+      "this is yoru thrid warning"
+    ]
+  },
+  "589033961137635338": {
+    "social_credit": 0,
+    "warns": [
+      "test"
+    ]
+  },
+  "900922626283810876": {
+    "social_credit": 0,
+    "warns": [
+      null
+    ]
+  },
+  "597870483551158280": {
+    "social_credit": 0,
+    "warns": [
+      "this is your first warning"
+    ]
+  }
+}
