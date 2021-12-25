@@ -41,6 +41,8 @@ class Moderation(commands.Cog):
                 description=f"Reason: {reason}",
                 footer=f"Banned By: {ctx.author}"
             )
+            await user.send("```You have been banned from The Peoples Republic of Banana```")
+            await user.send(embed=embed)
             
         else:
             embed = err_embed(
@@ -49,8 +51,7 @@ class Moderation(commands.Cog):
             )
         
         await ctx.channel.send(embed=embed)
-        await user.send("```You have been banned from The Peoples Republic of Banana```")
-        await user.send(embed=embed)
+        
 
     @commands.command(aliases=["yeet"])
     @commands.has_permissions(kick_members = True)
@@ -62,6 +63,8 @@ class Moderation(commands.Cog):
                 description=f"Reason: {reason}",
                 footer=f"Kicked By: {ctx.author}"
             )
+            await user.send("```You have been kicked from The Peoples Republic of Banana```")
+            await user.send(embed=embed)
             
         else:
             embed = err_embed(
@@ -70,8 +73,7 @@ class Moderation(commands.Cog):
             )
         
         await ctx.channel.send(embed=embed)
-        await user.send("```You have been banned from The Peoples Republic of Banana```")
-        await user.send(embed=embed)
+        
 
     @commands.command(aliases=["lockdown", "panic"])
     @commands.has_permissions(manage_channels=True)
@@ -108,6 +110,8 @@ class Moderation(commands.Cog):
                 description=f"Reason: {reason}",
                 footer=f"Muted By: {ctx.author}"
             )
+            await user.send("```You have been muted on The Peoples Republic of Banana```")
+            await user.send(embed=embed)
             
         else:
             embed = err_embed(
@@ -116,8 +120,7 @@ class Moderation(commands.Cog):
             )
         
         await ctx.channel.send(embed=embed)
-        await user.send("```You have been muted on The Peoples Republic of Banana```")
-        await user.send(embed=embed)
+        
     
     @commands.command(aliases=["slow", "slowmode"])
     @commands.has_permissions(manage_channels=True)
@@ -147,7 +150,6 @@ class Moderation(commands.Cog):
                     description=f"{user} has been re-welcomed into the community.",
                     footer=f"Unbanned By: {ctx.author}"
                 )
-                await ctx.channel.send(embed=embed)
                 await user.send("```Your ban has been lifted for The Peoples Republic of Banana```")
                 await user.send(embed=embed)
                 break
@@ -156,7 +158,8 @@ class Moderation(commands.Cog):
                 error=f"{user} not found in server bans",
                 author=ctx.author
             )
-            await ctx.channel.send(embed=embed)
+            
+        await ctx.channel.send(embed=embed)
         
     @commands.command(aliases=["open", "calm"])
     @commands.has_permissions(manage_channels=True)
