@@ -49,6 +49,8 @@ class Moderation(commands.Cog):
             )
         
         await ctx.channel.send(embed=embed)
+        await user.send("```You have been banned from The Peoples Republic of Banana```")
+        await user.send(embed=embed)
 
     @commands.command(aliases=["yeet"])
     @commands.has_permissions(kick_members = True)
@@ -68,6 +70,8 @@ class Moderation(commands.Cog):
             )
         
         await ctx.channel.send(embed=embed)
+        await user.send("```You have been banned from The Peoples Republic of Banana```")
+        await user.send(embed=embed)
 
     @commands.command(aliases=["lockdown", "panic"])
     @commands.has_permissions(manage_channels=True)
@@ -112,13 +116,14 @@ class Moderation(commands.Cog):
             )
         
         await ctx.channel.send(embed=embed)
+        await user.send("```You have been muted on The Peoples Republic of Banana```")
+        await user.send(embed=embed)
     
     @commands.command(aliases=["slow", "slowmode"])
     @commands.has_permissions(manage_channels=True)
     async def setslow(self, ctx, seconds: int, channel: discord.TextChannel=None):
         channel = channel or ctx.channel
         await channel.edit(slowmode_delay=seconds)
-
         embed = com_embed(
             title=f"****{channel.name}**** slowmode has been changed",
             description=f"Channel slow mode has been set to: {seconds}",
@@ -137,18 +142,21 @@ class Moderation(commands.Cog):
 
             if user_.id == user.id:
                 await ctx.guild.unban(user)
-                embed = discord.Embed(
+                embed = com_embed(
                     title=f"****{user}**** has been ****UNBANNED****",
                     description=f"{user} has been re-welcomed into the community.",
-                    color=0xfce303
-                )
-                embed.set_footer(
-                    text=f"Unbanned By: {ctx.author}"
+                    footer=f"Unbanned By: {ctx.author}"
                 )
                 await ctx.channel.send(embed=embed)
-                break;
+                await user.send("```Your ban has been lifted for The Peoples Republic of Banana```")
+                await user.send(embed=embed)
+                break
         else:
-            await ctx.channel.send("User not found in server bans")
+            embed = err_embed(
+                error=f"{user} not found in server bans",
+                author=ctx.author
+            )
+            await ctx.channel.send(embed=embed)
         
     @commands.command(aliases=["open", "calm"])
     @commands.has_permissions(manage_channels=True)
@@ -157,13 +165,10 @@ class Moderation(commands.Cog):
         overwrite = channel.overwrites_for(ctx.guild.default_role)
         overwrite.send_messages = True
         await channel.set_permissions(ctx.guild.default_role, overwrite=overwrite)
-        embed = discord.Embed(
+        embed = com_embed(
             title=f"****{channel.name}**** has been ****UNLOCKED****",
             description=f"{channel.name} is no longer locked, messages can be sent by any member who is not muted.",
-            color=0xfce303
-        )
-        embed.set_footer(
-            text=f"Unlocked By: {ctx.author}"
+            footer=f"Unlocked By: {ctx.author}"
         )
         await ctx.channel.send(embed=embed)
     
@@ -174,8 +179,14 @@ class Moderation(commands.Cog):
         normal = discord.utils.get(ctx.guild.roles, name = 'Banana Peasent')
         await user.remove_roles(muted)
         await user.add_roles(normal)
-        await ctx.channel.send(f"{user.mention} has been un-muted")
-        await user.send("You were un-muted")
+        embed = com_embed(
+            title=f"****{user}**** has been **UN-MUTED**",
+            description="User can now send messages and speak",
+            footer=f"Un-Muted By: {ctx.author}"
+        )
+        await ctx.channel.send(embed=embed)
+        await user.send("```You have been un-muted on The Peoples Republic of Banana```")
+        await user.send(embed=embed)
         return
 
     @commands.command()
@@ -194,40 +205,63 @@ class Moderation(commands.Cog):
                 users.update({f"{user.id}": {"social_credit": 0, "warns": []}})
                 users[f"{user.id}"]["warns"].append(warning)
                 json.dump(users, f, indent=2)
+
+        embed = com_embed(
+            title=f"****{user}**** has been ****WARNED****",
+            description=f"Warning: {warning}",
+            footer=f"Warned By: {ctx.author}"
+        )
         
-        await ctx.channel.send(f"{user.mention} has been warned")
-        if warning:
-            await user.send(f"You have been warned: {warning}")
+        await ctx.channel.send(embed=embed)
+        await user.send("```You have been warned on The Peoples Republic of Banana```")
+        await user.send(embed=embed)
 
     @commands.command(aliases=["warnings"])
-    async def warns(self, ctx, i, user: discord.Member=None):
+    async def warns(self, ctx, user: discord.Member=None, command=None):
         user = user or ctx.author
 
         with open("/Users/altan/Programming/Python/Banana Bot/src/data/users.json", "r") as f:
             users = json.load(f)
 
-        if i == "all":
-            await ctx.channel.send(f"{user.mention} you have {len(users[f'{ctx.author.id}']['warns'])}")
-
-        elif i == "clear":
+        if command == "clear":
             if ctx.author.guild_permissions.administrator:
                 with open("/Users/altan/Programming/Python/Banana Bot/src/data/users.json", "w") as f:
                     users[f'{ctx.author.id}']["warns"] = []
                     json.dump(users, f, indent=2)
-                await ctx.channel.send(f"{user.mention} your warns have been cleared")
+                
+                embed = com_embed(
+                    title=f"{user} warns have been cleared",
+                    description=f"Warns cleared: {len(users[f'{ctx.author.id}']['warns'])}",
+                    footer=f"Cleared By: {ctx.author}"
+                )
+                await ctx.channel.send(embed=embed)
+                await user.send("```Your on The Peoples Republic of Banana have been cleared```")
+                await user.send(embed=embed)
             else:
-                await ctx.channel.send(f"{user.mention} you don't have administrator privilages")
+                embed = err_embed(
+                    error=f"{ctx.author} you don't have administrator privilages",
+                    author=ctx.author
+                )
+                await ctx.channel.send(embed=embed)
 
         else:
-            try:
-                await ctx.channel.send(f"{user.mention} your warning {i}: {users[f'{ctx.author.id}']['warns'][int(i)-1]}")
-            except:
-                pass
+            embed = com_embed(
+                title=f"{user} has {len(warns:=users[f'{ctx.author.id}']['warns'])} warnings",
+                description="\n".join(warns),
+                footer=f"Requested By: {ctx.author}"
+            )
+
+            await ctx.channel.send(embed=embed)
 
     @commands.command(aliases=["clear, clean"])
     @commands.has_permissions(manage_messages=True)
-    async def purge(self, ctx, qty: int):
+    async def purge(self, ctx, qty: int=5):
         await ctx.channel.purge(limit=qty)
-        msg = await ctx.channel.send(f"{qty} messages were deleted")
+        embed = com_embed(
+            title=f"Messages purge in {ctx.channel}",
+            description=f"Messages deleted: {qty}",
+            footer=f"Purge By: {ctx.author}"
+        )
+        msg = await ctx.channel.send(embed=embed)
         time.sleep(3)
         await msg.delete()
