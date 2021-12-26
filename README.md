@@ -9,35 +9,67 @@ intervention can be done by admins but the bot will automatically punish and
 pardon people in sepcific cases. More commands will be added to the utility
 file. The bot is deployed on heroku.com
 
+## Table of Contents
+
+- [Setup](#setup)
+- [Details](#details)
+- [Project Structure](project_structure)
+- [Licence](#licence)
+
 ## Setup
 
-Development:
+- Clone Repository
 
+```Sh
+git clone https://github.com/L0ad1n6/Banana-Bot
 ```
+
+- Configure Discord Token
+
+```Sh
+cd Banana-Bot
+echo token=YOUR-TOKEN-HERE>.env
+```
+
+- Create Virtual Enviornment (Optional)
+
+```Sh
 python -m venv ./venv
 source ./venv/bin/activate
+```
+
+- Installing Dependencies
+
+All of the project dependencies are in the requirements.txt file
+
+```
 pip install -r requirements.txt
+```
+
+- Running Code
+
+For development nodemon is a very powerfull tool:
+
+```Sh
 npm install nodemon
 nodemon --exec python src/main.py
 ```
 
-Production:
+For local deployment:
 
-```
-python -m venv ./venv
-source ./venv/bin/activate
-pip install -r requirements.txt
+```Sh
 python src/main.py
 ```
 
+For production I would adivse using [heroku](https://www.heroku.com)
+
 ## Usage
 
-Type the characters "--" and then any command to run the command. Type "--help"
-for help.
-
-## Examples
+Type the characters "--" and then any command or command alias to run the
+command. Type "--help" for a list of commands help.
 
 ```
---cred sub 100 @ELMTN
---ban @ELMTN Example usage of ban command
+
+--cred sub 100 @ELMTN --ban @ELMTN Example usage of ban command
+
 ```
