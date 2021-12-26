@@ -25,7 +25,22 @@ class Help(commands.Cog):
     
     @commands.group(invoke_without_command=True)
     async def help(self, ctx):
-        return
+        embed = discord.Embed(
+            title="Command Index", 
+            description="List of all available commands.",
+            color=0xfce303
+        )
+        embed.add_field(
+            name="Moderation",
+            value="ban, kick, lock, mute, nsetslow,\nnunban, unlock, unmute, warn,\nwarns, purge",
+            inline=False
+        )
+        embed.add_field(
+            name="Social Credit",
+            value="cred (\"--help cred\" for more credit commands)",
+            inline=False
+        )
+        await ctx.channel.send(embed=embed)
     
     # Moderation Help Commands
     @help.command()
@@ -33,7 +48,7 @@ class Help(commands.Cog):
         embed = help_embed(
             name="Ban - Administrator Command",
             description="Bans members.",
-            syntax="b![ban|evict] <user> [reason]"
+            syntax="--[ban|evict] <user> [reason]"
         )
         await ctx.channel.send(embed=embed)
     
@@ -42,7 +57,7 @@ class Help(commands.Cog):
         embed = help_embed(
             name="Kick - Administrator Command",
             description="Kicks members.",
-            syntax="b![kick|yeet] <user> [reason]"
+            syntax="--[kick|yeet] <user> [reason]"
         )
         await ctx.channel.send(embed=embed)
     
@@ -51,7 +66,7 @@ class Help(commands.Cog):
         embed = help_embed(
             name="Lock - Administrator Command",
             description="Locks channel, if no channel is specified current channel is locked.",
-            syntax="b![lock|lockdown|panic] [channel]"
+            syntax="--[lock|lockdown|panic] [channel]"
         )
         await ctx.channel.send(embed=embed)
     
@@ -60,7 +75,7 @@ class Help(commands.Cog):
         embed = help_embed(
             name="Mute - Administrator Command",
             description="Mutes members.",
-            syntax="b![mute|silence|censor] <user> [reason]"
+            syntax="--[mute|silence|censor] <user> [reason]"
         )
         await ctx.channel.send(embed=embed)
     
@@ -69,7 +84,7 @@ class Help(commands.Cog):
         embed = help_embed(
             name="Set Slowmode - Administrator Command",
             description="Sets slowmode of current channel.",
-            syntax="b![setslow|slow|slowmode] <seconds>"
+            syntax="--[setslow|slow|slowmode] <seconds>"
         )
         await ctx.channel.send(embed=embed)
     
@@ -78,7 +93,7 @@ class Help(commands.Cog):
         embed = help_embed(
             name="Unban - Administrator Command",
             description="Unbans user.",
-            syntax="b![unban|pardon] <user>"
+            syntax="--[unban|pardon] <user>"
         )
         await ctx.channel.send(embed=embed)
     
@@ -87,7 +102,7 @@ class Help(commands.Cog):
         embed = help_embed(
             name="Unlock - Administrator Command",
             description="Unlocks channel.",
-            syntax="b![unlock|open|calm] [channel]"
+            syntax="--[unlock|open|calm] [channel]"
         )
         await ctx.channel.send(embed=embed)
     
@@ -96,7 +111,7 @@ class Help(commands.Cog):
         embed = help_embed(
             name="Unmute - Administrator Command",
             description="Unmutes user.",
-            syntax="b![unmute|unsilence|uncensor] <user>"
+            syntax="--[unmute|unsilence|uncensor] <user>"
         )
         await ctx.channel.send(embed=embed)
     
@@ -105,7 +120,7 @@ class Help(commands.Cog):
         embed = help_embed(
             name="Warn - Administrator Command",
             description="Warns user for specified reason, used to keep track of punishements and mis behavior.",
-            syntax="b!warn <user> [warning]"
+            syntax="--warn <user> [warning]"
         )
         await ctx.channel.send(embed=embed)
     
@@ -114,7 +129,7 @@ class Help(commands.Cog):
         embed = help_embed(
             name="Unban - Administrator Command",
             description="Unbans user.",
-            syntax="b![warns|warnings] [all|clear|warn index|none] [user]"
+            syntax="--[warns|warnings] [all|clear|warn index|none] [user]"
         )
         await ctx.channel.send(embed=embed)
     
@@ -123,30 +138,55 @@ class Help(commands.Cog):
         embed = help_embed(
             name="Unban - Administrator Command",
             description="Unbans user.",
-            syntax="b![warns|warnings] [all|clear|warn index|none] [user]"
+            syntax="--[warns|warnings] [all|clear|warn index|none] [user]"
         )
         await ctx.channel.send(embed=embed)
     
     # Social Credit Help Commands
-    @help.command()
+    @help.group()
     async def cred(self, ctx):
-        return
+        embed = help_embed(
+            name="Cred - Social Credit Command",
+            description="Displays user's social credit.\nCommands: add, reset, set, sub",
+            syntax="--[cred|credits|credit] [user]"
+        )
+        await ctx.channel.send(embed=embed)
     
-    @help.command()
-    async def addcred(self, ctx):
-        return
+    @cred.command()
+    async def add(self, ctx):
+        embed = help_embed(
+            name="Add - Adminstrator Command",
+            description="Increases user's social credit by amount.",
+            syntax="--cred [add|increase] <amount> [user]"
+        )
+        await ctx.channel.send(embed=embed)
     
-    @help.command()
-    async def subcred(self, ctx):
-        return
+    @cred.command()
+    async def sub(self, ctx):
+        embed = help_embed(
+            name="Sub - Administrator Command",
+            description="Decreases user's social credit by amount.",
+            syntax="--cred [sub|subtract|reduce|decrease] <amount> [user]"
+        )
+        await ctx.channel.send(embed=embed)
     
-    @help.command()
-    async def resetcred(self, ctx):
-        return
+    @cred.command()
+    async def reset(self, ctx):
+        embed = help_embed(
+            name="Reset - Administrator Command",
+            description="Resets user's social credit",
+            syntax="--cred [reset|zero|restart] [user]"
+        )
+        await ctx.channel.send(embed=embed)
     
-    @help.command()
-    async def setcred(self, ctx):
-        return
+    @cred.command()
+    async def set(self, ctx):
+        embed = help_embed(
+            name="Set - Administrator Command",
+            description="Sets user's social credit to amount.",
+            syntax="--cred set <amount> [user]"
+        )
+        await ctx.channel.send(embed=embed)
     
     # Utility Help Commands
     @help.command()
