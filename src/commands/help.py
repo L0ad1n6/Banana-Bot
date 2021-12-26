@@ -24,7 +24,7 @@ class Help(commands.Cog):
         self.bot = bot
     
     @commands.group(invoke_without_command=True)
-    async def help(self):
+    async def help(self, ctx):
         return
     
     # Moderation Help Commands

@@ -52,7 +52,6 @@ class Moderation(commands.Cog):
         
         await ctx.channel.send(embed=embed)
         
-
     @commands.command(aliases=["yeet"])
     @commands.has_permissions(kick_members = True)
     async def kick(self, ctx, user: discord.Member, *, reason = None):
@@ -74,7 +73,6 @@ class Moderation(commands.Cog):
         
         await ctx.channel.send(embed=embed)
         
-
     @commands.command(aliases=["lockdown", "panic"])
     @commands.has_permissions(manage_channels=True)
     async def lock(self, ctx, channel: discord.TextChannel=None):
@@ -121,7 +119,6 @@ class Moderation(commands.Cog):
         
         await ctx.channel.send(embed=embed)
         
-    
     @commands.command(aliases=["slow", "slowmode"])
     @commands.has_permissions(manage_channels=True)
     async def setslow(self, ctx, seconds: int, channel: discord.TextChannel=None):
