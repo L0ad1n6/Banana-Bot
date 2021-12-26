@@ -8,7 +8,7 @@ from commands import Moderation, SocialCredit, Utility, Help, Default
 from server import run
 
 def main():
-    bot = commands.Bot(command_prefix="--")
+    bot = commands.Bot(command_prefix=["--", "—"])
     bot.remove_command("help")
 
     bot.add_cog(Moderation(bot))

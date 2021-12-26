@@ -30,6 +30,9 @@ class SocialCredit(commands.Cog):
         with open("/Users/altan/Programming/Projects/Banana Bot/src/data/users.json", "r") as f:
             users = json.load(f)
 
+        if str(user.id) not in users:
+            users.update({str(user.id):{"social_credit":0,"warns":[]}})
+
         embed = cred_embed(
             title=f"****{user}'s**** Social Credit",
             description=f"Social Credit: {users[str(user.id)]['social_credit']}",
@@ -43,6 +46,8 @@ class SocialCredit(commands.Cog):
         user = user or ctx.author
         with open("/Users/altan/Programming/Projects/Banana Bot/src/data/users.json", "r") as f:
             users = json.load(f)
+            if str(user.id) not in users:
+                users.update({str(user.id):{"social_credit":0,"warns":[]}})
             users[str(user.id)]["social_credit"] += amount
 
         with open("/Users/altan/Programming/Projects/Banana Bot/src/data/users.json", "w") as f:
@@ -63,6 +68,8 @@ class SocialCredit(commands.Cog):
         user = user or ctx.author
         with open("/Users/altan/Programming/Projects/Banana Bot/src/data/users.json", "r") as f:
             users = json.load(f)
+            if str(user.id) not in users:
+                users.update({str(user.id):{"social_credit":0,"warns":[]}})
             users[str(user.id)]["social_credit"] -= amount
 
         with open("/Users/altan/Programming/Projects/Banana Bot/src/data/users.json", "w") as f:
@@ -83,6 +90,8 @@ class SocialCredit(commands.Cog):
         user = user or ctx.author
         with open("/Users/altan/Programming/Projects/Banana Bot/src/data/users.json", "r") as f:
             users = json.load(f)
+            if str(user.id) not in users:
+                users.update({str(user.id):{"social_credit":0,"warns":[]}})
             users[str(user.id)]["social_credit"] = 0
 
         with open("/Users/altan/Programming/Projects/Banana Bot/src/data/users.json", "w") as f:
@@ -103,6 +112,8 @@ class SocialCredit(commands.Cog):
         user = user or ctx.author
         with open("/Users/altan/Programming/Projects/Banana Bot/src/data/users.json", "r") as f:
             users = json.load(f)
+            if str(user.id) not in users:
+                users.update({str(user.id):{"social_credit":0,"warns":[]}})
             users[str(user.id)]["social_credit"] = amount
 
         with open("/Users/altan/Programming/Projects/Banana Bot/src/data/users.json", "w") as f:
@@ -119,6 +130,9 @@ class SocialCredit(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, ctx):
+        if ctx.author == self.bot.user:
+            return
+
         msg = ctx.content
         formatted = np.array(b10(msg)).reshape((1, 1))
         prediction = list(self.model.predict(formatted)[0])
@@ -127,6 +141,9 @@ class SocialCredit(commands.Cog):
         if i != 1:
             with open("/Users/altan/Programming/Projects/Banana Bot/src/data/users.json", "r") as f:
                 users = json.load(f)
+
+            if str(ctx.author.id) not in users:
+                users.update({str(ctx.author.id):{"social_credit":0,"warns":[]}})
 
             if i == 0:
                 users[str(ctx.author.id)]["social_credit"] -= 15*prediction[i]+(len(users[str(ctx.author.id)]["warns"])+1)*3

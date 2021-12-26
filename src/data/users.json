@@ -1,35 +1,34 @@
 {
   "586902188899696653": {
-    "social_credit": 72.73098847955677,
-    "warns": []
-  },
-  "495606508264882196": {
-    "social_credit": 0,
+    "social_credit": 10,
     "warns": []
   },
   "530938174969479190": {
-    "social_credit": 0,
-    "warns": [
-      "impropper use of bot",
-      "this is yoru thrid warning"
-    ]
+    "social_credit": 100000,
+    "warns": []
   },
-  "589033961137635338": {
-    "social_credit": 0,
-    "warns": [
-      "test"
-    ]
+  "249370301308076042": {
+    "social_credit": 100000,
+    "warns": []
   },
-  "900922626283810876": {
-    "social_credit": 0,
-    "warns": [
-      null
-    ]
+  "495606508264882196": {
+    "social_credit": 100000,
+    "warns": []
   },
-  "597870483551158280": {
-    "social_credit": 0,
-    "warns": [
-      "this is your first warning"
-    ]
+  "882434682292142080": {
+    "social_credit": 100000,
+    "warns": []
+  },
+  "298732761097830400": {
+    "social_credit": 100000,
+    "warns": []
+  },
+  "384782745445990441": {
+    "social_credit": 100000,
+    "warns": []
+  },
+  "555197757317447710": {
+    "social_credit": -100000,
+    "warns": []
   }
 }
