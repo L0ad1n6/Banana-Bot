@@ -22,7 +22,7 @@ def err_embed(error, author):
         color=0xfce303
     )
     embed.set_footer(
-        text=f"Command by: {author}"
+        text=f"Command By: {author}"
     )
     return embed
 

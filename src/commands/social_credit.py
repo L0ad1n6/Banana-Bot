@@ -3,18 +3,7 @@ from discord.ext import commands
 import lightgbm as lgb
 import json
 import numpy as np
-
-def cred_embed(title, description, footer):
-    embed = discord.Embed(
-        title=title,
-        description=description,
-        color=0xfce303
-    )
-    embed.set_footer(
-        text=footer
-    )
-    return embed
-
+from .moderation import com_embed
 def b10(string):
     string = list(filter(str.isalnum, string.lower()))
     return int("1"+("".join([str(ord(char)).zfill(3) for char in string])))
@@ -33,7 +22,7 @@ class SocialCredit(commands.Cog):
         if str(user.id) not in users:
             users.update({str(user.id):{"social_credit":0,"warns":[]}})
 
-        embed = cred_embed(
+        embed = com_embed(
             title=f"****{user}'s**** Social Credit",
             description=f"Social Credit: {users[str(user.id)]['social_credit']}",
             footer=f"Command By: {ctx.author}"
@@ -53,7 +42,7 @@ class SocialCredit(commands.Cog):
         with open("/Users/altan/Programming/Projects/Banana Bot/src/data/users.json", "w") as f:
             json.dump(users, f, indent=2)
 
-        embed = cred_embed(
+        embed = com_embed(
             title=f"****{user}'s**** Scoial Credit has been ****INCREASED****",
             description=f"New Social Credit: {users[str(user.id)]['social_credit']}",
             footer=f"Added By: {ctx.author}"
@@ -75,7 +64,7 @@ class SocialCredit(commands.Cog):
         with open("/Users/altan/Programming/Projects/Banana Bot/src/data/users.json", "w") as f:
             json.dump(users, f, indent=2)
 
-        embed = cred_embed(
+        embed = com_embed(
             title=f"****{user}'s**** Scoial Credit has been ****REDUCED****",
             description=f"New Social Credit: {users[str(user.id)]['social_credit']}",
             footer=f"Subtracted By: {ctx.author}"
@@ -97,7 +86,7 @@ class SocialCredit(commands.Cog):
         with open("/Users/altan/Programming/Projects/Banana Bot/src/data/users.json", "w") as f:
             json.dump(users, f, indent=2)
 
-        embed = cred_embed(
+        embed = com_embed(
             title=f"****{user}'s**** Scoial Credit has been ****RESET****",
             description=f"New Social Credit: {users[str(user.id)]['social_credit']}",
             footer=f"Reset By: {ctx.author}"
@@ -119,7 +108,7 @@ class SocialCredit(commands.Cog):
         with open("/Users/altan/Programming/Projects/Banana Bot/src/data/users.json", "w") as f:
             json.dump(users, f, indent=2)
 
-        embed = cred_embed(
+        embed = com_embed(
             title=f"****{user}'s**** Scoial Credit has been ****SET****",
             description=f"New Social Credit: {users[str(user.id)]['social_credit']}",
             footer=f"Set By: {ctx.author}"

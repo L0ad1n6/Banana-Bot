@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 import os
 
 from commands import Moderation, SocialCredit, Utility, Help, Default
+from commands.moderation import err_embed
 from server import run
 
 def main():
