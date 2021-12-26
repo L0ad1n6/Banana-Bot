@@ -24,4 +24,4 @@ if __name__ == "__main__":
     load_dotenv()
     bot = Thread(main())
     bot.start()
-    # run()
+    run()
