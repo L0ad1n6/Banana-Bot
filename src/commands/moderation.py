@@ -226,16 +226,17 @@ class Moderation(commands.Cog):
         if command == "clear":
             if ctx.author.guild_permissions.administrator:
                 with open("src/data/users.json", "w") as f:
+                    warns = len(users[f'{ctx.author.id}']["warns"])
                     users[f'{ctx.author.id}']["warns"] = []
                     json.dump(users, f, indent=2)
                 
                 embed = com_embed(
                     title=f"{user} warns have been cleared",
-                    description=f"Warns cleared: {len(users[f'{ctx.author.id}']['warns'])}",
+                    description=f"Warns cleared: {warns}",
                     footer=f"Cleared By: {ctx.author}"
                 )
                 await ctx.channel.send(embed=embed)
-                await user.send("```Your on The Peoples Republic of Banana have been cleared```")
+                await user.send("```Your warns on The Peoples Republic of Banana have been cleared```")
                 await user.send(embed=embed)
             else:
                 embed = err_embed(
