@@ -43,7 +43,7 @@ class SocialCredit(commands.Cog):
             json.dump(users, f, indent=2)
 
         embed = com_embed(
-            title=f"****{user}'s**** Scoial Credit has been ****INCREASED****",
+            title=f"****{user}'s**** Social Credit has been ****INCREASED****",
             description=f"New Social Credit: {users[str(user.id)]['social_credit']}",
             footer=f"Added By: {ctx.author}"
         )
@@ -65,7 +65,7 @@ class SocialCredit(commands.Cog):
             json.dump(users, f, indent=2)
 
         embed = com_embed(
-            title=f"****{user}'s**** Scoial Credit has been ****REDUCED****",
+            title=f"****{user}'s**** Social Credit has been ****REDUCED****",
             description=f"New Social Credit: {users[str(user.id)]['social_credit']}",
             footer=f"Subtracted By: {ctx.author}"
         )
@@ -87,7 +87,7 @@ class SocialCredit(commands.Cog):
             json.dump(users, f, indent=2)
 
         embed = com_embed(
-            title=f"****{user}'s**** Scoial Credit has been ****RESET****",
+            title=f"****{user}'s**** Social Credit has been ****RESET****",
             description=f"New Social Credit: {users[str(user.id)]['social_credit']}",
             footer=f"Reset By: {ctx.author}"
         )
@@ -109,7 +109,7 @@ class SocialCredit(commands.Cog):
             json.dump(users, f, indent=2)
 
         embed = com_embed(
-            title=f"****{user}'s**** Scoial Credit has been ****SET****",
+            title=f"****{user}'s**** Social Credit has been ****SET****",
             description=f"New Social Credit: {users[str(user.id)]['social_credit']}",
             footer=f"Set By: {ctx.author}"
         )
