@@ -24,7 +24,7 @@ class SocialCredit(commands.Cog):
         self.model = lgb.Booster(model_file="/Users/altan/Programming/Projects/Banana Bot/src/data/model.txt")
         self.bot = bot
     
-    @commands.group(invoke_without_command=True)
+    @commands.group(invoke_without_command=True, aliases=["credits", "credit"])
     async def cred(self, ctx, user: discord.Member=None):
         user = user or ctx.author
         with open("/Users/altan/Programming/Projects/Banana Bot/src/data/users.json", "r") as f:
@@ -40,7 +40,7 @@ class SocialCredit(commands.Cog):
         )
         await ctx.channel.send(embed=embed)
 
-    @cred.command()
+    @cred.command(aliases=["increase"])
     @commands.has_permissions(administrator=True)
     async def add(self, ctx, amount: int, user: discord.Member=None):
         user = user or ctx.author
@@ -62,7 +62,7 @@ class SocialCredit(commands.Cog):
         await user.send(f"```Your Social Credit on The Peoples Republic of Banana has been updated```")
         await user.send(embed=embed)
     
-    @cred.command()
+    @cred.command(aliases=["subtract", "reduce", "decrease"])
     @commands.has_permissions(administrator=True)
     async def sub(self, ctx, amount: int, user: discord.Member=None):
         user = user or ctx.author
@@ -84,7 +84,7 @@ class SocialCredit(commands.Cog):
         await user.send(f"```Your Social Credit on The Peoples Republic of Banana has been updated```")
         await user.send(embed=embed)
     
-    @cred.command()
+    @cred.command(aliases=["zero", "restart"])
     @commands.has_permissions(administrator=True)
     async def reset(self, ctx, user: discord.Member=None):
         user = user or ctx.author
