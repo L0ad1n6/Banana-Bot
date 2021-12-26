@@ -10,13 +10,13 @@ def b10(string):
 
 class SocialCredit(commands.Cog):
     def __init__(self, bot):
-        self.model = lgb.Booster(model_file="/Users/altan/Programming/Projects/Banana Bot/src/data/model.txt")
+        self.model = lgb.Booster(model_file="src/data/model.txt")
         self.bot = bot
     
     @commands.group(invoke_without_command=True, aliases=["credits", "credit"])
     async def cred(self, ctx, user: discord.Member=None):
         user = user or ctx.author
-        with open("/Users/altan/Programming/Projects/Banana Bot/src/data/users.json", "r") as f:
+        with open("src/data/users.json", "r") as f:
             users = json.load(f)
 
         if str(user.id) not in users:
@@ -33,13 +33,13 @@ class SocialCredit(commands.Cog):
     @commands.has_permissions(administrator=True)
     async def add(self, ctx, amount: int, user: discord.Member=None):
         user = user or ctx.author
-        with open("/Users/altan/Programming/Projects/Banana Bot/src/data/users.json", "r") as f:
+        with open("src/data/users.json", "r") as f:
             users = json.load(f)
             if str(user.id) not in users:
                 users.update({str(user.id):{"social_credit":0,"warns":[]}})
             users[str(user.id)]["social_credit"] += amount
 
-        with open("/Users/altan/Programming/Projects/Banana Bot/src/data/users.json", "w") as f:
+        with open("src/data/users.json", "w") as f:
             json.dump(users, f, indent=2)
 
         embed = com_embed(
@@ -55,13 +55,13 @@ class SocialCredit(commands.Cog):
     @commands.has_permissions(administrator=True)
     async def sub(self, ctx, amount: int, user: discord.Member=None):
         user = user or ctx.author
-        with open("/Users/altan/Programming/Projects/Banana Bot/src/data/users.json", "r") as f:
+        with open("src/data/users.json", "r") as f:
             users = json.load(f)
             if str(user.id) not in users:
                 users.update({str(user.id):{"social_credit":0,"warns":[]}})
             users[str(user.id)]["social_credit"] -= amount
 
-        with open("/Users/altan/Programming/Projects/Banana Bot/src/data/users.json", "w") as f:
+        with open("src/data/users.json", "w") as f:
             json.dump(users, f, indent=2)
 
         embed = com_embed(
@@ -77,13 +77,13 @@ class SocialCredit(commands.Cog):
     @commands.has_permissions(administrator=True)
     async def reset(self, ctx, user: discord.Member=None):
         user = user or ctx.author
-        with open("/Users/altan/Programming/Projects/Banana Bot/src/data/users.json", "r") as f:
+        with open("src/data/users.json", "r") as f:
             users = json.load(f)
             if str(user.id) not in users:
                 users.update({str(user.id):{"social_credit":0,"warns":[]}})
             users[str(user.id)]["social_credit"] = 0
 
-        with open("/Users/altan/Programming/Projects/Banana Bot/src/data/users.json", "w") as f:
+        with open("src/data/users.json", "w") as f:
             json.dump(users, f, indent=2)
 
         embed = com_embed(
@@ -99,13 +99,13 @@ class SocialCredit(commands.Cog):
     @commands.has_permissions(administrator=True)
     async def set(self, ctx, amount: int, user: discord.Member=None):
         user = user or ctx.author
-        with open("/Users/altan/Programming/Projects/Banana Bot/src/data/users.json", "r") as f:
+        with open("src/data/users.json", "r") as f:
             users = json.load(f)
             if str(user.id) not in users:
                 users.update({str(user.id):{"social_credit":0,"warns":[]}})
             users[str(user.id)]["social_credit"] = amount
 
-        with open("/Users/altan/Programming/Projects/Banana Bot/src/data/users.json", "w") as f:
+        with open("src/data/users.json", "w") as f:
             json.dump(users, f, indent=2)
 
         embed = com_embed(
@@ -128,7 +128,7 @@ class SocialCredit(commands.Cog):
         i = prediction.index(max(prediction))
 
         if i != 1:
-            with open("/Users/altan/Programming/Projects/Banana Bot/src/data/users.json", "r") as f:
+            with open("src/data/users.json", "r") as f:
                 users = json.load(f)
 
             if str(ctx.author.id) not in users:
@@ -140,5 +140,5 @@ class SocialCredit(commands.Cog):
             elif i == 2:
                 users[str(ctx.author.id)]["social_credit"] += 15*prediction[i]
 
-            with open("/Users/altan/Programming/Projects/Banana Bot/src/data/users.json", "w") as f:
+            with open("src/data/users.json", "w") as f:
                 json.dump(users, f, indent=2)

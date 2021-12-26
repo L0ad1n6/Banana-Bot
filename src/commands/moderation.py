@@ -192,16 +192,16 @@ class Moderation(commands.Cog):
     @commands.command()
     @commands.has_permissions(administrator=True)
     async def warn(self, ctx, user: discord.Member, *, warning=None):
-        with open("/Users/altan/Programming/Python/Banana Bot/src/data/users.json", "r") as f:
+        with open("src/data/users.json", "r") as f:
             users = json.load(f)
 
         try:
-            with open("/Users/altan/Programming/Python/Banana Bot/src/data/users.json", "w") as f:
+            with open("src/data/users.json", "w") as f:
                 users[f"{user.id}"]["warns"].append(warning)
                 json.dump(users, f, indent=2)
 
         except:
-            with open("/Users/altan/Programming/Python/Banana Bot/src/data/users.json", "w") as f:
+            with open("src/data/users.json", "w") as f:
                 users.update({f"{user.id}": {"social_credit": 0, "warns": []}})
                 users[f"{user.id}"]["warns"].append(warning)
                 json.dump(users, f, indent=2)
@@ -220,12 +220,12 @@ class Moderation(commands.Cog):
     async def warns(self, ctx, user: discord.Member=None, command=None):
         user = user or ctx.author
 
-        with open("/Users/altan/Programming/Python/Banana Bot/src/data/users.json", "r") as f:
+        with open("src/data/users.json", "r") as f:
             users = json.load(f)
 
         if command == "clear":
             if ctx.author.guild_permissions.administrator:
-                with open("/Users/altan/Programming/Python/Banana Bot/src/data/users.json", "w") as f:
+                with open("src/data/users.json", "w") as f:
                     users[f'{ctx.author.id}']["warns"] = []
                     json.dump(users, f, indent=2)
                 

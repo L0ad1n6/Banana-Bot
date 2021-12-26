@@ -7,7 +7,7 @@ import lightgbm as lgb
 from sklearn.model_selection import train_test_split
 
 def main():
-    df = pd.read_csv("/Users/altan/Programming/Projects/Banana Bot/src/data/dataset.csv")
+    df = pd.read_csv("src/data/dataset.csv")
     x = df.iloc[:, 0:-1].values
     y = df.iloc[:, -1].values
 
@@ -28,7 +28,7 @@ def main():
     }
 
     model = lgb.train(params, d_train, 10000, valid_sets=[d_test])
-    model.save_model("/Users/altan/Programming/Projects/Banana Bot/src/data/model.txt", num_iteration=model.best_iteration)
+    model.save_model("src/data/model.txt", num_iteration=model.best_iteration)
 
     # while True:
     #     text = input("Enter message: ")
