@@ -6,7 +6,6 @@ import os
 
 from commands import Moderation, SocialCredit, Utility, Help, Default
 from commands.moderation import err_embed
-from server import run
 
 def main():
     bot = commands.Bot(command_prefix=["--", "—"])
@@ -22,6 +21,4 @@ def main():
 
 if __name__ == "__main__":
     load_dotenv()
-    bot = Thread(main())
-    bot.start()
-    run()
+    main()
