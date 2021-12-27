@@ -1,8 +1,4 @@
-from typing import DefaultDict
 import pandas as pd
-import numpy as np
-from model import model
-from dataset import b10
 import lightgbm as lgb
 from sklearn.model_selection import train_test_split
 
