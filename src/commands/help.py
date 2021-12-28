@@ -32,7 +32,7 @@ class Help(commands.Cog):
         )
         embed.add_field(
             name="Moderation",
-            value="ban, kick, lock, mute, nsetslow,\nnunban, unlock, unmute, warn,\nwarns, purge",
+            value="ban, kick, lock, mute, setslow,\nnunban, unlock, unmute, warn,\nwarns, purge",
             inline=False
         )
         embed.add_field(
