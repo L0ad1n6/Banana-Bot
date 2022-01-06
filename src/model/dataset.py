@@ -7,10 +7,9 @@ def b10(string):
 def main():
     df = pd.read_csv("src/data/raw_dataset.csv")
     sentences = df.iloc[:, 0].values
-    states = df.iloc[:, 1].values
+    sentences = map(b10, sentences)
 
-    for i, sentence in enumerate(sentences):
-        sentences[i] = b10(sentence)
+    states = df.iloc[:, 1].values
 
     pd.DataFrame(list(zip(sentences, states)), columns=("sentence", "state")).to_csv("src/data/datset.csv", index=False)
     
