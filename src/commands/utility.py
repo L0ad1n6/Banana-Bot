@@ -52,6 +52,14 @@ class Utility(commands.Cog):
         )
         await user.send(embed=embed)
 
+    @commands.command()
+    async def poll(self, ctx):
+        return
+
+    @commands.command()
+    async def dataset(self, ctx, status, *, phrase):
+        return
+
     @commands.Cog.listener()
     async def on_message_delete(self, ctx):
         # await ctx.channel.send(ctx)

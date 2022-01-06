@@ -1,9 +1,11 @@
 import discord
 from discord.ext import commands
+from discord.utils import get
 import lightgbm as lgb
 import json
 import numpy as np
 from .moderation import com_embed
+from ..db import *
 def b10(string):
     string = list(filter(str.isalnum, string.lower()))
     return int("1"+("".join([str(ord(char)).zfill(3) for char in string])))
@@ -16,15 +18,15 @@ class SocialCredit(commands.Cog):
     @commands.group(invoke_without_command=True, aliases=["credits", "credit"])
     async def cred(self, ctx, user: discord.Member=None):
         user = user or ctx.author
-        with open("src/data/users.json", "r") as f:
-            users = json.load(f)
+        data = get_user(user.id)
 
-        if str(user.id) not in users:
-            users.update({str(user.id):{"social_credit":0,"warns":[]}})
+        if not data:
+            create_user(user.id)
+            data = get_user(user.id)
 
         embed = com_embed(
             title=f"****{user}'s**** Social Credit",
-            description=f"Social Credit: {users[str(user.id)]['social_credit']}",
+            description=f"Social Credit: {data['social_credit']}",
             footer=f"Command By: {ctx.author}"
         )
         await ctx.channel.send(embed=embed)
@@ -33,18 +35,17 @@ class SocialCredit(commands.Cog):
     @commands.has_permissions(administrator=True)
     async def add(self, ctx, amount: int, user: discord.Member=None):
         user = user or ctx.author
-        with open("src/data/users.json", "r") as f:
-            users = json.load(f)
-            if str(user.id) not in users:
-                users.update({str(user.id):{"social_credit":0,"warns":[]}})
-            users[str(user.id)]["social_credit"] += amount
+        data = get_user(user.id)
 
-        with open("src/data/users.json", "w") as f:
-            json.dump(users, f, indent=2)
+        if not data:
+            create_user(user.id)
+
+        add_credits(user.id, amount)
+        data = get_user(user.id)
 
         embed = com_embed(
             title=f"****{user}'s**** Social Credit has been ****INCREASED****",
-            description=f"New Social Credit: {users[str(user.id)]['social_credit']}",
+            description=f"New Social Credit: {data['social_credit']}",
             footer=f"Added By: {ctx.author}"
         )
         await ctx.channel.send(embed=embed)
@@ -55,18 +56,17 @@ class SocialCredit(commands.Cog):
     @commands.has_permissions(administrator=True)
     async def sub(self, ctx, amount: int, user: discord.Member=None):
         user = user or ctx.author
-        with open("src/data/users.json", "r") as f:
-            users = json.load(f)
-            if str(user.id) not in users:
-                users.update({str(user.id):{"social_credit":0,"warns":[]}})
-            users[str(user.id)]["social_credit"] -= amount
+        data = get_user(user.id)
 
-        with open("src/data/users.json", "w") as f:
-            json.dump(users, f, indent=2)
+        if not data:
+            create_user(user.id)
+
+        sub_credits(user.id, amount)
+        data = get_user(user.id)
 
         embed = com_embed(
             title=f"****{user}'s**** Social Credit has been ****REDUCED****",
-            description=f"New Social Credit: {users[str(user.id)]['social_credit']}",
+            description=f"New Social Credit: {data['social_credit']}",
             footer=f"Subtracted By: {ctx.author}"
         )
         await ctx.channel.send(embed=embed)
@@ -77,18 +77,16 @@ class SocialCredit(commands.Cog):
     @commands.has_permissions(administrator=True)
     async def reset(self, ctx, user: discord.Member=None):
         user = user or ctx.author
-        with open("src/data/users.json", "r") as f:
-            users = json.load(f)
-            if str(user.id) not in users:
-                users.update({str(user.id):{"social_credit":0,"warns":[]}})
-            users[str(user.id)]["social_credit"] = 0
+        data = get_user(user.id)
 
-        with open("src/data/users.json", "w") as f:
-            json.dump(users, f, indent=2)
+        if not data:
+            create_user(user.id)
+
+        reset_credits(user.id)
 
         embed = com_embed(
             title=f"****{user}'s**** Social Credit has been ****RESET****",
-            description=f"New Social Credit: {users[str(user.id)]['social_credit']}",
+            description=f"New Social Credit: 0",
             footer=f"Reset By: {ctx.author}"
         )
         await ctx.channel.send(embed=embed)
@@ -99,18 +97,16 @@ class SocialCredit(commands.Cog):
     @commands.has_permissions(administrator=True)
     async def set(self, ctx, amount: int, user: discord.Member=None):
         user = user or ctx.author
-        with open("src/data/users.json", "r") as f:
-            users = json.load(f)
-            if str(user.id) not in users:
-                users.update({str(user.id):{"social_credit":0,"warns":[]}})
-            users[str(user.id)]["social_credit"] = amount
+        data = get_user(user.id)
 
-        with open("src/data/users.json", "w") as f:
-            json.dump(users, f, indent=2)
+        if not data:
+            create_user(user.id)
+
+        set_credits(user.id, amount)
 
         embed = com_embed(
             title=f"****{user}'s**** Social Credit has been ****SET****",
-            description=f"New Social Credit: {users[str(user.id)]['social_credit']}",
+            description=f"New Social Credit: {amount}",
             footer=f"Set By: {ctx.author}"
         )
         await ctx.channel.send(embed=embed)
@@ -128,17 +124,20 @@ class SocialCredit(commands.Cog):
         i = prediction.index(max(prediction))
 
         if i != 1:
-            with open("src/data/users.json", "r") as f:
-                users = json.load(f)
+            data = get_user(ctx.author.id)
 
-            if str(ctx.author.id) not in users:
-                users.update({str(ctx.author.id):{"social_credit":0,"warns":[]}})
+            if data:
+                create_user(ctx.author.id)
+                data = get_user(ctx.author.id)
 
             if i == 0:
-                users[str(ctx.author.id)]["social_credit"] -= 15*prediction[i]+(len(users[str(ctx.author.id)]["warns"])+1)*3
+                sub_credits(ctx.author.id, 15*prediction[i]+(len(data["warns"])+1)*3)
+                add_point(msg, "bad")
+
+            elif i == 1:
+                add_point(msg, "neutral")
 
             elif i == 2:
-                users[str(ctx.author.id)]["social_credit"] += 15*prediction[i]
+                add_credits(ctx.author.id, 15*prediction[i])
+                add_point(msg, "good")
 
-            with open("src/data/users.json", "w") as f:
-                json.dump(users, f, indent=2)
