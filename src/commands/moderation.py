@@ -3,6 +3,11 @@ from discord.ext import commands
 import json
 import time
 
+import sys
+sys.path.append("..")
+
+from db import *
+
 def com_embed(title, description, footer):
     embed = discord.Embed(
         title=title,
@@ -191,19 +196,12 @@ class Moderation(commands.Cog):
     @commands.command()
     @commands.has_permissions(administrator=True)
     async def warn(self, ctx, user: discord.Member, *, warning=None):
-        with open("src/data/users.json", "r") as f:
-            users = json.load(f)
+        data = get_user(user.id)
 
-        try:
-            with open("src/data/users.json", "w") as f:
-                users[f"{user.id}"]["warns"].append(warning)
-                json.dump(users, f, indent=2)
-
-        except:
-            with open("src/data/users.json", "w") as f:
-                users.update({f"{user.id}": {"social_credit": 0, "warns": []}})
-                users[f"{user.id}"]["warns"].append(warning)
-                json.dump(users, f, indent=2)
+        if not data:
+            create_user(user.id)
+        
+        add_warn(user.id, warning)
 
         embed = com_embed(
             title=f"****{user}**** has been ****WARNED****",
@@ -218,17 +216,17 @@ class Moderation(commands.Cog):
     @commands.command(aliases=["warnings"])
     async def warns(self, ctx, user: discord.Member=None, command=None):
         user = user or ctx.author
+        data = get_user(user.id)
 
-        with open("src/data/users.json", "r") as f:
-            users = json.load(f)
+        if not data:
+            create_user(user.id)
+            data = get_user(user.id)
 
         if command == "clear":
             if ctx.author.guild_permissions.administrator:
-                with open("src/data/users.json", "w") as f:
-                    warns = len(users[f'{ctx.author.id}']["warns"])
-                    users[f'{ctx.author.id}']["warns"] = []
-                    json.dump(users, f, indent=2)
-                
+                warns = len(data["warns"])
+                reset_warns(user.id)
+
                 embed = com_embed(
                     title=f"{user} warns have been cleared",
                     description=f"Warns cleared: {warns}",
@@ -246,7 +244,7 @@ class Moderation(commands.Cog):
 
         else:
             embed = com_embed(
-                title=f"{user} has {len(warns:=users[f'{ctx.author.id}']['warns'])} warnings",
+                title=f"{user} has {len(warns:=data['warns'])} warnings",
                 description="\n".join(warns),
                 footer=f"Requested By: {ctx.author}"
             )

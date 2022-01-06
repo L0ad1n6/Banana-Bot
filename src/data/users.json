@@ -1,1 +1,8 @@
-{}
+{
+  "586902188899696653": {
+    "social_credit": 0,
+    "warns": [
+      "test db warning"
+    ]
+  }
+}

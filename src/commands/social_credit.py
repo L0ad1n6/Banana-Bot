@@ -5,7 +5,12 @@ import lightgbm as lgb
 import json
 import numpy as np
 from .moderation import com_embed
-from ..db import *
+
+import sys
+sys.path.append("../")
+
+from db import *
+
 def b10(string):
     string = list(filter(str.isalnum, string.lower()))
     return int("1"+("".join([str(ord(char)).zfill(3) for char in string])))
