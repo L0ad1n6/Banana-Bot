@@ -5,10 +5,10 @@
 
 Banana Bot is a bot designed for The People's Republic of Banana. In addition to
 the moderation and utility commands standard in most bots, Banana Bot analyzes
-messages sent and determines whether a message is "againt the state", "neutral"
+messages sent and determines whether a message is "against the state", "neutral"
 or "praising the state". Depending on the verdict of the model the members
 social credit is adjusted. Manual intervention can be done by admins, however,
-bot will take care of punishements and pardons automatically with respect to
+bot will take care of punishments and pardons automatically with respect to
 social credit. I plan to add more utility commands in the future.
 
 ## Table of Contents
@@ -16,7 +16,7 @@ social credit. I plan to add more utility commands in the future.
 - [Setup](#setup)
 - [Usage](#usage)
 - [Project Structure](project_structure)
-- [Licence](#licence)
+- [License](#license)
 
 ### Setup
 
@@ -33,7 +33,7 @@ cd Banana-Bot
 echo token=YOUR-TOKEN-HERE>.env
 ```
 
-- Create Virtual Enviornment (Optional)
+- Create Virtual Environment (Optional)
 
 ```Sh
 python -m venv ./venv
@@ -50,7 +50,7 @@ pip install -r requirements.txt
 
 - Running Code
 
-For development nodemon is a very powerfull tool:
+For development nodemon is a very powerful tool:
 
 ```Sh
 npm install nodemon
@@ -63,7 +63,7 @@ For local deployment:
 python src/main.py
 ```
 
-For production I would adivse using [heroku](https://www.heroku.com)
+For production I would advise using [heroku](https://www.heroku.com)
 
 ### Usage
 
@@ -83,17 +83,17 @@ command. Type "--help" for a list of commands help.
 | **requirements.txt** | Has all of the package requirements                                        |
 | **Procfile**         | Config file for [heroku](https://www.heroku.com)                           |
 | **LICENSE**          | Holds license for bot                                                      |
-| **.gitignore**       | Standard gitignore file to prevent unwanted files form being commited      |
+| **.gitignore**       | Standard gitignore file to prevent unwanted files form being committed     |
 | **.prettierrc**      | Config file for prettier                                                   |
 | **src**              | Contains all source code for project                                       |
-| **src/commands**     | All commmand related code is found in this dirrectory                      |
+| **src/commands**     | All command related code is found in this directory                        |
 | **src/data**         | Data such as member data, photos, dataset and ml model are stored here     |
-| **src/model**        | All code related to training the model are located in this dirrectory      |
+| **src/model**        | All code related to training the model are located in this directory       |
 | **src/main**         | Entrypoint to the code, pieces together all the different parts of the bot |
 
-### Licence
+### License
 
-Licenced under the [MIT](LICENSE) License
+Licensed under the [MIT](LICENSE) License
 
 Copyright (c) 2021 Altan Mehmet Ünver (L0ad1n6)
 
