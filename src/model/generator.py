@@ -4,7 +4,7 @@ import numpy as np
 import json
 
 alphabet = "abcdefghijklmnopqrstuvwxyz"
-with open("src/data/generative.json", "r") as f:
+with open("src/data/generator/generative.json", "r") as f:
     data = json.load(f)
 
 def main(cases):
@@ -12,27 +12,21 @@ def main(cases):
     bads = []
 
     for _ in range(cases):
-        goods_ = good()
-        bads_ = bad()
+        goods.extend(good())
+        bads.extend(bad())
 
-        goods_ = map(mistake, goods_)
-        goods_ = map(rand_cap, goods_)
+    sentences = goods + bads
+    states = [2 for _ in goods] + [0 for _ in goods]
 
-        bads_ = map(mistake, bads_)
-        bads_ = map(mistake, bads_)
-
-        goods.extend(goods_)
-        bads.extend(bads_)
-
-    pd.DataFrame(list(zip(sentences, states)), columns=("sentence", "state")).to_csv("src/data/datset.csv", index=False)
+    pd.DataFrame(list(zip(sentences, states)), columns=("sentence", "state")).to_csv("src/data/generator/generated.csv", index=False)
 
 def mistake(text):
     text = list(text)
     for i, letter in enumerate(text):
-        if not np.random.choice(4):
+        if not np.random.choice(45):
             text[i]
 
-        if not np.random.choice(4):
+        if not np.random.choice(35):
             text.insert(i, alphabet[np.random.choice(26)])
 
     return "".join(text)
@@ -40,7 +34,7 @@ def mistake(text):
 def rand_cap(text):
     text = list(text)
     for i, letter in enumerate(text):
-        if not np.random.choice(4):
+        if not np.random.choice(45):
             text[i] = text[i].upper()
 
     return "".join(text)
@@ -48,41 +42,51 @@ def rand_cap(text):
 def good():
     phrases = []
     text = []
-    length = np.random.choice(4) + 1
-    status = "bad" if np.random.choice(2) else "good" 
+    length = np.random.choice(3) + 1
 
     for _ in range(length):
-        if not np.random.choice(6):
-            i = np.random.choice(len(data["words"][status]))
-            text.append(data["words"][status])
+        if not np.random.choice(8):
+            i = np.random.choice(len(data["words"]["good"]))
+            text.append(data["words"]["good"][i])
 
         else:
-            i = np.random.choice(len(data["phrases"][status]))
-            text.append(data["phrases"][status])
+            i = np.random.choice(len(data["phrases"]["good"]))
+            text.append(data["phrases"]["good"][i])
 
     i = np.random.choice(len(data["banana"]))
     text.append(data["banana"][i])
 
-    if status == "bad":
-        i = np.random.choice(len(data["negations"]))
-        text.append(data["negations"][i])
 
     for _ in range(length // 2):
         np.random.shuffle(text)
-        phrases.append(" ".join(text).strip())
+        phrase = " ".join(text)
+        phrases.append(phrase.strip())
 
     return phrases
 
-    
-
-
-
-
 def bad():
-    return
+    phrases = []
+    text = []
+    length = np.random.choice(4) + 1
 
-def neutral():
-    return
+    for _ in range(length):
+        if not np.random.choice(8):
+            i = np.random.choice(len(data["words"]["bad"]))
+            text.append(data["words"]["bad"][i])
+
+        else:
+            i = np.random.choice(len(data["phrases"]["bad"]))
+            text.append(data["phrases"]["bad"][i])
+
+    i = np.random.choice(len(data["banana"]))
+    text.append(data["banana"][i])
+
+    for _ in range(length // 2):
+        np.random.shuffle(text)
+        phrase = " ".join(text)
+        phrases.append(phrase.strip())
+
+    return phrases
 
 if __name__ == '__main__':
-    main()
+    main(200)

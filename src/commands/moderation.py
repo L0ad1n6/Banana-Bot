@@ -23,7 +23,7 @@ def err_embed(error, author):
     embed = discord.Embed(
         title=f"An Error Has Occurred",
         description=error,
-        color=0xfce303
+        color=0xff1919
     )
     embed.set_footer(
         text=f"Command By: {author}"

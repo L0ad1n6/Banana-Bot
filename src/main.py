@@ -4,7 +4,7 @@ from threading import Thread
 from dotenv import load_dotenv
 import os
 
-from commands import Moderation, SocialCredit, Utility, Help, Default
+from commands import Moderation, SocialCredit, Utility, Help, Default, Music
 from commands.moderation import err_embed
 
 def main():
@@ -15,7 +15,8 @@ def main():
     bot.add_cog(SocialCredit(bot))
     bot.add_cog(Utility(bot))
     bot.add_cog(Help(bot))
-    bot.add_cog(Default(bot))
+    bot.add_cog(Music(bot))
+    # bot.add_cog(Default(bot))
 
     bot.run(os.getenv("token"))
 

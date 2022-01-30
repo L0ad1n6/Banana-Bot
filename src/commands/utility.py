@@ -9,13 +9,13 @@ from db import *
 class Utility(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.deleted = []
+        self.deleted = ["test"]
 
     @commands.command()
     async def lastdeleted(self, ctx, arg=None):
         if arg == "all":
             await ctx.channel.send(self.deleted[-6:-1])
-        await ctx.channel.send(self.deleted[-1])
+        await ctx.channel.send(self.deleted[0])
     
     @commands.command()
     async def whois(self, ctx, user: discord.Member):
@@ -66,7 +66,8 @@ class Utility(commands.Cog):
         return
 
     @commands.Cog.listener()
-    async def on_message_delete(self, ctx):
+    async def on_message_delete(self, ctx, user):
         # await ctx.channel.send(ctx)
-        self.deleted.append((ctx.content, ctx.author.id))
+        # print("triggered")
+        self.deleted.insert((ctx.content, ctx.author.id), 0)
         return

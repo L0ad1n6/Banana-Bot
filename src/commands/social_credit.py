@@ -17,7 +17,7 @@ def b10(string):
 
 class SocialCredit(commands.Cog):
     def __init__(self, bot):
-        self.model = lgb.Booster(model_file="src/data/model.txt")
+        self.model = lgb.Booster(model_file="src/data/model/model.txt")
         self.bot = bot
     
     @commands.group(invoke_without_command=True, aliases=["credits", "credit"])
@@ -131,7 +131,7 @@ class SocialCredit(commands.Cog):
         if i != 1:
             data = get_user(ctx.author.id)
 
-            if data:
+            if not data:
                 create_user(ctx.author.id)
                 data = get_user(ctx.author.id)
 
@@ -145,4 +145,3 @@ class SocialCredit(commands.Cog):
             elif i == 2:
                 add_credits(ctx.author.id, 15*prediction[i])
                 add_point(msg, "good")
-
