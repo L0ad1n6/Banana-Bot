@@ -25,14 +25,14 @@ FFMPEG_OPTIONS = {
 }
 
 
-def song_embed(title, song, author):
+def song_embed(title, song):
     embed = discord.Embed(
         title=title, 
         description=f"[{song['name']}]({song['url']})",
         color=0xfce303
     )
     embed.set_thumbnail(url=song["thumbnail"])
-    embed.set_footer(text=f"Added by {author}", icon_url=author.avatar_url)
+    embed.set_footer(text=f"Added by {song['author']}", icon_url=song["author"].avatar_url)
     return embed
 
 def is_connected(ctx: commands.Context):
@@ -46,6 +46,11 @@ def is_playing(ctx: commands.Context):
         voice_client.source and \
         ctx.voice_client.is_playing()
 
+def user_connected(ctx: commands.Context):
+    try:
+        return ctx.author.voice.channel
+    except:
+        return False
 
 class Queue:
     def __init__(self):
@@ -75,7 +80,7 @@ class Queue:
     def clear(self):
         self.queue = [self.queue[0]]
 
-    def add(self, url):
+    def add(self, url, author):
         with YoutubeDL(YDL_OPTIONS) as ydl:
             info = ydl.extract_info(url, download=False)#['entries'][0]
         
@@ -86,7 +91,8 @@ class Queue:
             "thumbnail": info['entries'][0]["thumbnail"] if "thumbnail" in info['entries'][0] else None,
             "url": info['entries'][0]["webpage_url"],
             "time": info['entries'][0]["duration"],
-            "source": source
+            "source": source,
+            "author": author
         }
         self.queue.append(song)
 
@@ -98,27 +104,36 @@ class Queue:
         random.shuffle(temp)
         self.queue = [self.queue[0]] + temp
 
+class AudioSourceTracked(discord.AudioSource):
+    def __init__(self, source):
+        self._source = source
+        self.count_20ms = 0
+
+    def read(self) -> bytes:
+        data = self._source.read()
+        if data:
+            self.count_20ms += 1
+        return data
+        
+    @property
+    def progress(self) -> float:
+        return self.count_20ms * 0.02 # count_20ms * 20ms
 class Music(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.q = Queue()
 
+
     def _play(self, ctx, song, voice_client):
         def on_end(err):
             if len(self.q.queue) > 0:
                 song = self.q.next()
-                embed = song_embed("Now Playing", song, ctx.message.author)
+                embed = song_embed("Now Playing", song)
                 self._play(ctx, song["source"], voice_client)
 
             else:
-                embed = discord.Embed(
-                    title="Queue Completed",
-                    description="To add songs to the queue: --play <song | url>",
-                    color=0xfce303
-                )
-                embed.set_footer(text="Use --help music for a list of music commands")
-                ctx.send(embed=embed)
                 asyncio.run_coroutine_threadsafe(voice_client.disconnect(), self.bot.loop)
+                raise EmptyQueue
 
             asyncio.run_coroutine_threadsafe(ctx.send(embed=embed), self.bot.loop)
         
@@ -126,6 +141,9 @@ class Music(commands.Cog):
 
     @commands.command()
     async def play(self, ctx: commands.Context, *, url=None):
+        if not user_connected(ctx):
+            raise UserNotConnected
+
         if not is_connected(ctx):
             await ctx.author.voice.channel.connect()
 
@@ -137,31 +155,31 @@ class Music(commands.Cog):
 
         if not url and not playing:
             song = self.q.now_playing
-            embed = song_embed("Resuming Song", song, ctx.message.author)
+            embed = song_embed("Resuming Song", song)
             voice_client.resume()
-            "resuming"
 
         elif not url:
             raise AlreadyPlaying
         
         else:
-            self.q.add(url)
+            self.q.add(url, ctx.author)
 
             if not playing:
                 song = self.q.now_playing
-                embed = song_embed("Playing Song", song, ctx.message.author)
-                print("playing")
+                embed = song_embed("Playing Song", song)
                 self._play(ctx, song["source"], voice_client)
 
             else:
                 song = self.q.last
-                print("added")
-                embed = song_embed("Added Song", song, ctx.message.author)
+                embed = song_embed("Added Song", song)
             
         await ctx.send(embed=embed)
 
     @commands.command()
     async def skip(self, ctx: commands.Context):
+        if not user_connected(ctx):
+            raise UserNotConnected
+
         if not is_connected(ctx):
             raise NotConnected
 
@@ -173,7 +191,7 @@ class Music(commands.Cog):
         song = self.q.next()
 
         if song:
-            embed = song_embed("Now Playing", song, ctx.message.author)
+            embed = song_embed("Now Playing", song, song["author"])
             self._play(ctx, song["source"], voice_client)
             await ctx.send(embed=embed)
         else:
@@ -203,6 +221,9 @@ class Music(commands.Cog):
 
     @commands.command()
     async def clear(self, ctx):
+        if not user_connected(ctx):
+            raise UserNotConnected
+
         if not is_connected(ctx):
             raise NotConnected
 
@@ -211,6 +232,9 @@ class Music(commands.Cog):
 
     @commands.command()
     async def add(self, ctx, *, url):
+        if not user_connected(ctx):
+            raise UserNotConnected
+
         if not is_connected(ctx):
             raise NotConnected
 
@@ -218,6 +242,9 @@ class Music(commands.Cog):
 
     @commands.command()
     async def remove(self, ctx, i: int):
+        if not user_connected(ctx):
+            raise UserNotConnected
+
         if not is_connected(ctx):
             raise NotConnected
 
@@ -230,6 +257,9 @@ class Music(commands.Cog):
 
     @commands.command()
     async def loop(self, ctx):
+        if not user_connected(ctx):
+            raise UserNotConnected
+
         if not is_connected(ctx):
             raise NotConnected
 
@@ -238,6 +268,9 @@ class Music(commands.Cog):
 
     @commands.command()
     async def unloop(self, ctx):
+        if not user_connected(ctx):
+            raise UserNotConnected
+
         if not is_connected(ctx):
             raise NotConnected
 
@@ -246,6 +279,9 @@ class Music(commands.Cog):
 
     @commands.command()
     async def pause(self, ctx):
+        if not user_connected(ctx):
+            raise UserNotConnected
+
         if not is_connected(ctx):
             raise NotConnected
 
@@ -258,24 +294,43 @@ class Music(commands.Cog):
             
     @commands.command()
     async def join(self, ctx: commands.Context):
+        if not user_connected(ctx):
+            raise UserNotConnected
+
         if is_connected(ctx):
-            await ctx.channel.send("Already connected to a voice channel.")
-        else:
-            await ctx.author.voice.channel.connect()
-            await ctx.channel.send(f"<:yellowcheck:934551782867214387> **Joining** {ctx.channel}")
+            raise AlreadyConnected
+
+        vc = ctx.author.voice.channel
+        await vc.connect()
+        await ctx.reply(f"<:yellowcheck:934551782867214387> **Joining** {vc}", mention_author=False)
 
     @commands.command()
     async def leave(self, ctx):
-        if is_connected(ctx):
-            await ctx.voice_client.disconnect()
-            await ctx.channel.send(f"<:yellowcheck:934551782867214387> **Leaving** {ctx.channel}")
-        else:
-            await ctx.channel.send("Not connected to a voice channel.")
+        if not is_connected(ctx):
+            raise NotConnected
+
+        await ctx.voice_client.disconnect()
+        await ctx.channel.send(f"<:yellowcheck:934551782867214387> **Leaving** {ctx.channel}")
 
     @commands.command()
     async def shuffle(self, ctx):
-        if is_connected(ctx):
-            self.q.shuffle()
-            await ctx.send("<:yellowcheck:934551782867214387> **Shuffled** Queue")
-        else:
-            await ctx.send("Not connected to a voice channel.")
+        if not user_connected(ctx):
+            raise UserNotConnected
+
+        if not is_connected(ctx):
+            raise NotConnected
+
+        self.q.shuffle()
+        await ctx.send("<:yellowcheck:934551782867214387> **Shuffled** Queue")
+
+    @commands.command()
+    async def fastforward(self, ctx, seconds: int):
+        return
+
+    @commands.command()
+    async def equalizer(self, ctx):
+        return
+
+    @commands.command()
+    async def volume(self, ctx):
+        return

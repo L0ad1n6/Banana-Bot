@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 import json
 import time
+from .errors import *
 
 import sys
 sys.path.append("..")
