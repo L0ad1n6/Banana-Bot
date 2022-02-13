@@ -3,6 +3,7 @@ package-lock.json
 package.json
 *node_modules/*
 *.vscode/*
+logs/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

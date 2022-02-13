@@ -1,6 +1,10 @@
 import discord
 from discord.ext import commands
 from discord.ext.commands.errors import *
+import logging
+from ._music_ import HZ_BANDS
+
+# logging.basicConfig(level=logging.INFO)
 
 class InsufficientCredit(commands.CommandError):
     pass
@@ -17,6 +21,24 @@ class NotPlaying(commands.CommandError):
 class AlreadyPlaying(commands.CommandError):
     pass
 class EmptyQueue(commands.CommandError):
+    pass
+class NoMoreSongs(commands.CommandError):
+    pass
+class NoHistory(commands.CommandError):
+    pass
+class InvalidTime(commands.CommandError):
+    pass
+class VolumeTooLow(commands.CommandError):
+    pass
+class VolumeTooHigh(commands.CommandError):
+    pass
+class NoLyrics(commands.CommandError):
+    pass
+class InvalidEQPreset(commands.CommandError):
+    pass
+class NonExistentEQBand(commands.CommandError):
+    pass
+class EQGainOutOfBounds(commands.CommandError):
     pass
 
 class Error(commands.Cog):
@@ -62,9 +84,37 @@ class Error(commands.Cog):
             msg = "<:yellowx:938093739283451964> Music is already playing"
 
         elif isinstance(error, EmptyQueue):
+            msg = "<:yellowx:938093739283451964> Queue is empty"
+
+        elif isinstance(error, NoMoreSongs):
             msg = "<:yellowx:938093739283451964> No more songs left in queue"
 
+        elif isinstance(error, NoHistory):
+            msg = "<:yellowx:938093739283451964> No songs have been played yet"
+
+        elif isinstance(error, InvalidTime):
+            msg = "<:yellowx:938093739283451964> Time formatting is invalid"
+
+        elif isinstance(error, VolumeTooHigh):
+            msg = "<:yellowx:938093739283451964> You will kill your ears if I set the volume any higher than 150% (capable of 1500%)"
+
+        elif isinstance(error, VolumeTooLow):
+            msg = "<:yellowx:938093739283451964> Volume must be greater than 0"
+
+        elif isinstance(error, NoLyrics):
+            msg = "<:yellowx:938093739283451964> No lyrics found for this song"
+
+        elif isinstance(error, InvalidEQPreset):
+            msg = "<:yellowx:938093739283451964> EQ preset must be one of the following: flat, boost, metal, piano"
+
+        elif isinstance(error, NonExistentEQBand):
+            msg = f"<:yellowx:938093739283451964> This is a 15 band equalizer, the band number should be between 1 and 15 or one of of the frequencies: {', '.join(str(band) for band in HZ_BANDS)}"
+
+        elif isinstance(error, EQGainOutOfBounds):
+            msg = "<:yellowx:938093739283451964> EQ Gain for any band should be between -10 db and 10 db. Though possible anything more will kill your ears"
+
         else:
+            logging.error(error)
             msg = "<:yellowx:938093739283451964> Something went wrong, try again or use --report"
 
         await ctx.reply(msg, mention_author=False)
