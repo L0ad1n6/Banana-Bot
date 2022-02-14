@@ -2,8 +2,7 @@ import asyncio
 import datetime as dt
 import random
 import re
-import typing as t
-from enum import Enum
+import os
 
 import aiohttp
 import discord
@@ -226,8 +225,8 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
 
         node = {
             "host": "127.0.0.1",
-            "port": 2333,
-            "rest_uri": "http://127.0.0.1:2333",
+            "port": os.getenv("PORT"),
+            "rest_uri": f"http://127.0.0.1:{os.getenv('PORT')}",
             "password": "youshallnotpass",
             "identifier": "MAIN",
             "region": "europe",
