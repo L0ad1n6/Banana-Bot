@@ -224,9 +224,9 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
         await self.bot.wait_until_ready()
 
         node = {
-            "host": "127.0.0.1",
+            "host": "0.0.0.0",
             "port": os.getenv("PORT"),
-            "rest_uri": f"http://127.0.0.1:{os.getenv('PORT')}",
+            "rest_uri": f"http://0.0.0.0:{os.getenv('PORT')}",
             "password": "youshallnotpass",
             "identifier": "MAIN",
             "region": "europe",
