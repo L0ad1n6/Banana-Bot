@@ -270,6 +270,7 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
 
     @commands.command()
     async def play(self, ctx, *, query=None):
+        print("p")
         player = self.get_player(ctx)
 
         if not player.is_connected:
@@ -286,6 +287,7 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
             query = query.strip("<>")
             if not re.match(URL_REGEX, query):
                 query = f"ytsearch:{query}"
+            print("playing")
 
             await player.add_tracks(ctx, await self.wavelink.get_tracks(query))
         
