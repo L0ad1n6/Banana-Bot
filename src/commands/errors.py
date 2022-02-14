@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 from discord.ext.commands.errors import *
 import logging
-from ._music_ import HZ_BANDS
+from .music import HZ_BANDS
 
 # logging.basicConfig(level=logging.INFO)
 

@@ -15,7 +15,7 @@ def main():
     bot.add_cog(Help(bot))
     bot.add_cog(Music(bot))
     bot.add_cog(Default(bot))
-    # bot.add_cog(Error(bot))
+    bot.add_cog(Error(bot))
 
     bot.run(os.getenv("token"))
 

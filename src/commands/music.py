@@ -389,6 +389,18 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
         await player.set_volume(value := max(0, player.volume - 10))
         await ctx.reply(f"<:yellowcheck:934551782867214387> Volume set to {value:,}%", mention_author=False)
 
+    @volume.command()
+    async def earrape(self, ctx):
+        player = self.get_player(ctx)
+        await player.set_volume(1500)
+        await ctx.reply(f"Shield your ears", mention_author=False)
+
+    @volume.command()
+    async def reset(self, ctx):
+        player = self.get_player(ctx)
+        await player.set_volume(100)
+        await ctx.reply("<:yellowcheck:934551782867214387> **Reset** Audio Level", mention_author=False)
+
     @commands.command()
     async def lyrics(self, ctx, name=None):
         player = self.get_player(ctx)
@@ -426,8 +438,8 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
                     embed.set_author(name=data["author"])
                     await ctx.send(embed=embed)
 
-    @commands.command(name="eq")
-    async def eq_command(self, ctx, preset: str):
+    @commands.command(aliases=["equalizer"])
+    async def eq(self, ctx, preset: str):
         player = self.get_player(ctx)
 
         eq = getattr(wavelink.eqs.Equalizer, preset, None)
@@ -437,8 +449,8 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
         await player.set_eq(eq())
         await ctx.send(f"Equaliser adjusted to the {preset} preset.")
 
-    @commands.command(name="adveq", aliases=["aeq"])
-    async def adveq_command(self, ctx, band: int, gain: float):
+    @commands.command(aliases=["aeq", "advanced_equalizer"])
+    async def adveq(self, ctx, band: int, gain: float):
         player = self.get_player(ctx)
 
         if not 1 <= band <= 15 and band not in HZ_BANDS:
