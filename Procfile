@@ -1,2 +1,2 @@
-worker: java -jar Lavalink.jar
+web: java -jar Lavalink.jar
 worker: python src/main.py
