@@ -1,9 +1,9 @@
 from discord.ext import commands
-from threading import Thread
 from dotenv import load_dotenv
 import os
 
 from commands import Moderation, SocialCredit, Utility, Help, Default, Music, Error
+from lavalink import run
 
 def main():
     bot = commands.Bot(command_prefix=["--", "—"])
@@ -21,4 +21,5 @@ def main():
 
 if __name__ == "__main__":
     load_dotenv()
+    run()
     main()

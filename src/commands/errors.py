@@ -1,10 +1,7 @@
-import discord
 from discord.ext import commands
 from discord.ext.commands.errors import *
-import logging
 from .music import HZ_BANDS
-
-# logging.basicConfig(level=logging.INFO)
+from wavelink import ZeroConnectedNodes
 
 class InsufficientCredit(commands.CommandError):
     pass
@@ -113,8 +110,10 @@ class Error(commands.Cog):
         elif isinstance(error, EQGainOutOfBounds):
             msg = "<:yellowx:938093739283451964> EQ Gain for any band should be between -10 db and 10 db. Though possible anything more will kill your ears"
 
+        elif isinstance(error, ZeroConnectedNodes):
+            msg = "<:yellowx:938093739283451964> Lavalink server is offline, music commands will not work. Report this as soon as possible"
+
         else:
-            logging.error(error)
             msg = "<:yellowx:938093739283451964> Something went wrong, try again or use --report"
 
         await ctx.reply(msg, mention_author=False)

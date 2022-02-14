@@ -8,7 +8,10 @@ import aiohttp
 import discord
 import wavelink
 from discord.ext import commands
+from dotenv import load_dotenv
 from .errors import *
+
+load_dotenv()
 
 URL_REGEX = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
 LYRICS_URL = "https://some-random-api.ml/lyrics?title="
@@ -21,7 +24,7 @@ OPTIONS = {
     "4⃣": 3,
     "5⃣": 4,
 }
-
+PORT = os.getenv("PORT") or 2333
 class Queue:
     def __init__(self):
         self._queue = []
@@ -224,12 +227,12 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
         await self.bot.wait_until_ready()
 
         node = {
-            "host": "0.0.0.0",
-            "port": os.getenv("PORT"),
-            "rest_uri": f"http://0.0.0.0:{os.getenv('PORT')}",
+            "host": "127.0.0.1",
+            "port": PORT,
+            "rest_uri": f"http://127.0.0.1:{PORT}",
             "password": "youshallnotpass",
             "identifier": "MAIN",
-            "region": "europe",
+            "region": "us-central",
         }
 
         await self.wavelink.initiate_node(**node)
@@ -397,7 +400,7 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
     @volume.command()
     async def reset(self, ctx):
         player = self.get_player(ctx)
-        await player.set_volume(100)
+        await player.set_volume(80)
         await ctx.reply("<:yellowcheck:934551782867214387> **Reset** Audio Level", mention_author=False)
 
     @commands.command()
