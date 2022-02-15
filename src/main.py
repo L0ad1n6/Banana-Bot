@@ -4,7 +4,7 @@ import os
 from time import sleep
 
 from commands import Moderation, SocialCredit, Utility, Help, Default, Music, Error
-from lavalink import run
+from server import run
 
 def main():
     bot = commands.Bot(command_prefix=["--", "—"])
