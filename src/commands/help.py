@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from .errors import *
 
 def help_embed(name, description, syntax):
     embed = discord.Embed(

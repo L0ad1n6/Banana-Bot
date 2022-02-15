@@ -4,6 +4,7 @@ from discord.utils import get
 import lightgbm as lgb
 import numpy as np
 from .moderation import com_embed
+from .errors import *
 
 import sys
 sys.path.append("../")

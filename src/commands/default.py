@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 from .moderation import err_embed
+from .errors import *
 
 class Default(commands.Cog):
     def __init__(self, bot):
