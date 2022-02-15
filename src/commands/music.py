@@ -291,7 +291,7 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
 
             await player.add_tracks(ctx, await self.wavelink.get_tracks(query))
         
-    @commands.command()
+    @commands.command(aliases=["stop"])
     async def pause(self, ctx):
         player = self.get_player(ctx)
 
@@ -367,6 +367,27 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
             )
 
         msg = await ctx.send(embed=embed)
+
+    @commands.command()
+    async def remove(self, ctx, index: int):
+        player = self.get_player(ctx)
+
+        if player.queue.is_empty:
+            raise EmptyQueue
+
+        if not 0 <= index <= player.queue.length:
+            raise NoMoreSongs
+
+        song = player.queue.next[index-1].title
+        player.queue._queue.pop(player.queue.position + index - 1)
+
+        await ctx.reply(f"<:yellowcheck:934551782867214387> **Removed** {song}", mention_author=False)
+
+    @commands.command()
+    async def clear(self, ctx):
+        player = self.get_player(ctx)
+        player.empty()
+        await ctx.reply(f"<:yellowcheck:934551782867214387> **Cleared** Queue", mention_author=False)
 
     @commands.group(aliases=["vol"], invoke_without_command=True)
     async def volume(self, ctx, volume: int):

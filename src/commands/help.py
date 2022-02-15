@@ -40,6 +40,11 @@ class Help(commands.Cog):
             value="cred (\"--help cred\" for more credit commands)",
             inline=False
         )
+        embed.add_field(
+            name="Music Commands",
+            value="join, leave, add, play, pause, \nskip, back, shuffle, loop, unloop, \nqueue, remove, clear, \nvolume (--help volume for more), \nlyrics, eq, aeq, nowplaying, skipto, \nrestart, seek ",
+            inline=False
+        )
         await ctx.channel.send(embed=embed)
     
     # Moderation Help Commands
@@ -230,7 +235,7 @@ class Help(commands.Cog):
         embed = help_embed(
             name="Pause - Music Command.",
             description="Pauses current track.",
-            syntax="--pause"
+            syntax="--[pause|stop]"
         )
         await ctx.channel.send(embed=embed)
 
@@ -325,15 +330,6 @@ class Help(commands.Cog):
         await ctx.channel.send(embed=embed)
 
     @help.command()
-    async def join(self, ctx):
-        embed = help_embed(
-            name="Join - Music Command.",
-            description="Makes bot join voice channel that message author is in.",
-            syntax="--[join|connect]"
-        )
-        await ctx.channel.send(embed=embed)
-
-    @help.command()
     async def lyrics(self, ctx):
         embed = help_embed(
             name="Lyrics - Music Command.",
@@ -396,6 +392,24 @@ class Help(commands.Cog):
         )
         await ctx.channel.send(embed=embed)
 
+    @help.command()
+    async def remove(self, ctx):
+        embed = help_embed(
+            name="Remove - Music Command.",
+            description="Removes song at index from queue.",
+            syntax="--remove index"
+        )
+        await ctx.channel.send(embed=embed)
+
+    @help.command()
+    async def clear(self, ctx):
+        embed = help_embed(
+            name="Clear - Music Command.",
+            description="Clears queue.",
+            syntax="--clear"
+        )
+        await ctx.channel.send(embed=embed)
+
     # Utility Help Commands
     @help.command()
     async def lastdeleted(self, ctx):
@@ -412,5 +426,7 @@ class Help(commands.Cog):
     @help.command()
     async def invite(self, ctx):
         return
+
+    
     
     
