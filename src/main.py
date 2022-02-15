@@ -16,12 +16,12 @@ def main():
     bot.add_cog(Help(bot))
     bot.add_cog(Music(bot))
     bot.add_cog(Default(bot))
-    # bot.add_cog(Error(bot))
+    bot.add_cog(Error(bot))
 
     bot.run(os.getenv("token"))
 
 if __name__ == "__main__":
     load_dotenv()
     run()
-    sleep(10)
+    sleep(10) # DO NOT REMOVE, this allows the lavalink server to run before bot initializes
     main()
