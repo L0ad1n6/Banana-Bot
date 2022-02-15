@@ -301,6 +301,11 @@ class Help(commands.Cog):
             description="Adjusts volume for bot, max is 150.",
             syntax="--[volume|vol] new-volume"
         )
+        embed.add_field(
+            name="Sub Commands",
+            value="up, down, reset",
+            inline=False
+        )
         await ctx.channel.send(embed=embed)
 
     @volume.command()
