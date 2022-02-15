@@ -1,6 +1,7 @@
 from discord.ext import commands
 from dotenv import load_dotenv
 import os
+from time import sleep
 
 from commands import Moderation, SocialCredit, Utility, Help, Default, Music, Error
 from lavalink import run
@@ -21,6 +22,6 @@ def main():
 
 if __name__ == "__main__":
     load_dotenv()
-    print(os.getenv("PORT"))
     run()
+    sleep(10)
     main()
