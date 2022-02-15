@@ -114,6 +114,7 @@ class Error(commands.Cog):
             msg = "<:yellowx:938093739283451964> Lavalink server is offline, music commands will not work. Report this as soon as possible"
 
         else:
+            print(error)
             msg = "<:yellowx:938093739283451964> Something went wrong, try again or use --report"
 
         await ctx.reply(msg, mention_author=False)

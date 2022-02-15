@@ -65,9 +65,9 @@ class Utility(commands.Cog):
     async def dataset(self, ctx, status, *, phrase):
         return
 
-    @commands.Cog.listener()
-    async def on_message_delete(self, ctx, user):
-        # await ctx.channel.send(ctx)
-        # print("triggered")
-        self.deleted.insert((ctx.content, ctx.author.id), 0)
-        return
+    # @commands.Cog.listener()
+    # async def on_message_delete(self, ctx, user):
+    #     # await ctx.channel.send(ctx)
+    #     # print("triggered")
+    #     self.deleted.insert((ctx.content, ctx.author.id), 0)
+    #     return

@@ -1,3 +1,5 @@
+# TODO: remove, fix delete handler
+
 import asyncio
 import datetime as dt
 import random
@@ -121,14 +123,14 @@ class Player(wavelink.Player):
 
     async def add_tracks(self, ctx, tracks):
         if not tracks:
-            await ctx.send("song does not exist")
+            await ctx.reply("Song does not exist", mention_author=False)
             return
 
         if isinstance(tracks, wavelink.TrackPlaylist):
             self.queue.add(*tracks.tracks)
         else:
             self.queue.add(tracks[0])
-            await ctx.send(f"<:yellowcheck:934551782867214387> **Added** {tracks[0].title}")
+            await ctx.reply(f"<:yellowcheck:934551782867214387> **Added** {tracks[0].title}", mention_author=False)
 
         if not self.is_playing and not self.queue.is_empty:
             await self.start_playback()
@@ -225,7 +227,6 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
 
     async def start_nodes(self):
         await self.bot.wait_until_ready()
-        print("starting")
 
         node = {
             "host": "127.0.0.1",
@@ -237,7 +238,6 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
         }
 
         await self.wavelink.initiate_node(**node)
-        print("started")
 
     def get_player(self, obj):
         if isinstance(obj, commands.Context):
@@ -311,8 +311,8 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
         await player.stop()
         await ctx.reply(f"<:yellowcheck:934551782867214387> **Now Playing** {player.queue.next[0].title}", mention_author=False)
 
-    @commands.command(aliases=["prev", "back"])
-    async def previous(self, ctx):
+    @commands.command(aliases=["prev", "previous"])
+    async def back(self, ctx):
         player = self.get_player(ctx)
 
         if not player.queue.history:
@@ -322,7 +322,7 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
         await player.stop()
         await ctx.reply(f"<:yellowcheck:934551782867214387> **Now Playing** {player.queue.next[0].title}", mention_author=False)
 
-    @commands.command()
+    @commands.command(aliases=["mix"])
     async def shuffle(self, ctx):
         player = self.get_player(ctx)
         player.queue.shuffle()
@@ -368,7 +368,7 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
 
         msg = await ctx.send(embed=embed)
 
-    @commands.group(invoke_without_command=True)
+    @commands.group(aliases=["vol"], invoke_without_command=True)
     async def volume(self, ctx, volume: int):
         player = self.get_player(ctx)
 
@@ -485,6 +485,7 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
         )
         embed.set_footer(text=f"Requested by {ctx.author.display_name}", icon_url=ctx.author.avatar_url)
         embed.add_field(name="Track title", value=f"[{player.queue.current.title}]({player.queue.current.uri})", inline=True)
+        embed.add_field(name="YT Channel", value=f"{player.queue.current.author}", inline=True)
 
         position = divmod(player.position, 60000)
         length = divmod(player.queue.current.length, 60000)
@@ -497,7 +498,7 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
 
         await ctx.send(embed=embed)
 
-    @commands.command(name="skipto", aliases=["playindex"])
+    @commands.command(aliases=["playindex"])
     async def skipto(self, ctx, index: int):
         player = self.get_player(ctx)
 
