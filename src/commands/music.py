@@ -225,6 +225,7 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
 
     async def start_nodes(self):
         await self.bot.wait_until_ready()
+        print("starting")
 
         node = {
             "host": "127.0.0.1",
@@ -236,6 +237,7 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
         }
 
         await self.wavelink.initiate_node(**node)
+        print("started")
 
     def get_player(self, obj):
         if isinstance(obj, commands.Context):
