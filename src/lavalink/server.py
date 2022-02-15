@@ -18,5 +18,4 @@ def run():
     Popen(["java", "-jar", "src/lavalink/Lavalink.jar"])
 
 if __name__ == "__main__":
-    print(os.getenv("PORT"))
     run()
