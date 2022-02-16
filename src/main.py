@@ -23,5 +23,4 @@ def main():
 if __name__ == "__main__":
     load_dotenv()
     run()
-    sleep(10) # DO NOT REMOVE, this allows the lavalink server to run before bot initializes
     main()
