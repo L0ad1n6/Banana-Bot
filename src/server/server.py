@@ -26,6 +26,7 @@ def configure():
     with open("application.yml", "w") as f:
         yaml.dump(app, f)
 
+
 def run():
     configure()
     Popen(["java", "-jar", "src/lavalink/Lavalink.jar"])
