@@ -29,7 +29,7 @@ def configure():
 
 def run():
     configure()
-    Popen(["java", "-jar", "src/lavalink/Lavalink.jar"])
+    Popen(["java", "-jar", "src/server/Lavalink.jar"])
     ping()
 
 if __name__ == "__main__":
