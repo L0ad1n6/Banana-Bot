@@ -22,3 +22,4 @@ typing_extensions==4.1.1
 wavelink==0.9.4
 yarl==1.5.1
 websocket-client==1.2.3
+dnspython==2.2.0
