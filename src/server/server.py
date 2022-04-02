@@ -9,7 +9,7 @@ from websocket._exceptions import WebSocketBadStatusException
 def ping():
     while True:
         try:
-            create_connection("ws://127.0.0.1:2335")
+            create_connection(f"ws://127.0.0.1:{os.getenv('PORT')}")
         except ConnectionRefusedError:
             pass
         except WebSocketBadStatusException:
@@ -31,6 +31,7 @@ def run():
     configure()
     Popen(["java", "-jar", "src/server/Lavalink.jar"])
     ping()
+    print("[Lavalink] Server is up and running")
 
 if __name__ == "__main__":
     run()

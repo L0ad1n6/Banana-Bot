@@ -211,7 +211,7 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
 
     @wavelink.WavelinkMixin.listener()
     async def on_node_ready(self, node):
-        print(f" Wavelink Node Ready: {node.identifier}")
+        print(f"[Lavalink] Node Ready: {node.identifier}")
 
     @wavelink.WavelinkMixin.listener("on_track_stuck")
     @wavelink.WavelinkMixin.listener("on_track_end")

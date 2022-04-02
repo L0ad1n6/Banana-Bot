@@ -1,36 +1,36 @@
 lavalink:
-    server:
-        bufferDurationMs: 400
-        frameBufferDurationMs: 5000
-        gc-warnings: true
-        password: youshallnotpass
-        playerUpdateInterval: 5
-        soundcloudSearchEnabled: true
-        sources:
-            bandcamp: true
-            http: true
-            local: false
-            soundcloud: true
-            twitch: true
-            vimeo: true
-            youtube: true
-        youtubePlaylistLoadLimit: 6
-        youtubeSearchEnabled: true
+  server:
+    bufferDurationMs: 400
+    frameBufferDurationMs: 5000
+    gc-warnings: true
+    password: youshallnotpass
+    playerUpdateInterval: 5
+    soundcloudSearchEnabled: true
+    sources:
+      bandcamp: true
+      http: true
+      local: false
+      soundcloud: true
+      twitch: true
+      vimeo: true
+      youtube: true
+    youtubePlaylistLoadLimit: 6
+    youtubeSearchEnabled: true
 logging:
-    file:
-        max-history: 30
-        max-size: 1GB
-    level:
-        lavalink: ERROR
-        root: ERROR
-    path: ./logs/
+  file:
+    max-history: 30
+    max-size: 1GB
+  level:
+    lavalink: ERROR
+    root: ERROR
+  path: ./logs/
 metrics:
-    prometheus:
-        enabled: false
-        endpoint: /metrics
+  prometheus:
+    enabled: false
+    endpoint: /metrics
 sentry:
-    dsn: ""
-    environment: ""
+  dsn: ''
+  environment: ''
 server:
-    address: 127.0.0.1
-    port: 2335
+  address: 127.0.0.1
+  port: 2333

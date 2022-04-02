@@ -114,7 +114,11 @@ class Error(commands.Cog):
 
         elif isinstance(error, ZeroConnectedNodes):
             msg = "<:yellowx:938093739283451964> Lavalink server is offline, bot will reboot to fix this."
-            os.execl(sys.executable, os.path.abspath("src/main.py")) 
+            print("Restarting...")
+            try:
+                os.execl(sys.executable, os.path.abspath("src/main.py")) 
+            except:
+                exit()
 
         else:
             msg = "<:yellowx:938093739283451964> Something went wrong, try again or use --report"
